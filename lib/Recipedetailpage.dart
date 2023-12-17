@@ -11,7 +11,7 @@ class Recipedetailpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFC36B),
+        backgroundColor: Colors.amber[800],
         title: Text(
           recipe.title,
           style: GoogleFonts.playfairDisplay(
@@ -20,7 +20,10 @@ class Recipedetailpage extends StatelessWidget {
           ),
         ),
       ),
-      body: RecipeDetailContent(recipe: recipe),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 2.0), // Sesuaikan jarak yang diinginkan
+        child: RecipeDetailContent(recipe: recipe),
+      ),
     );
   }
 }
@@ -44,38 +47,35 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // ... Gambar dan bagian lainnya ...
-
           Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50.0),
-                  bottomRight: Radius.circular(50.0),
-                ),
-                child: Image.network(
-                  widget.recipe.imageUrl,
-                  width: double.infinity,
-                  height: 260,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                height: 260,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xFFFFC36B),
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50.0),
-                    bottomRight: Radius.circular(50.0),
-                  ),
-                ),
-              ),
-            ],
+  children: [
+    ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(50.0),
+        bottomRight: Radius.circular(50.0),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color.fromARGB(255, 255, 143, 0),
+            width: 1.0,
           ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(50.0),
+            bottomRight: Radius.circular(50.0),
+          ),
+        ),
+        child: Image.network(
+          widget.recipe.image,
+          width: double.infinity,
+          height: 290,
+          fit: BoxFit.contain,
+        ),
+      ),
+    ),
+    
+  ],
+),
 
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -83,14 +83,14 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Cooking Time: ${widget.recipe.cookTime} minutes',
+                  'Cooking Time: ${widget.recipe.readyInMinutes} minutes',
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 16,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Category: ${widget.recipe.category}',
+                  'Category: ${widget.recipe.dishTypes.join(", ")}',
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 16,
                   ),
@@ -106,13 +106,13 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: widget.recipe.ingredients
+                  children: widget.recipe.extendedIngredients
                       .asMap()
                       .entries
                       .where((entry) => showFullIngredients || entry.key < 2)
                       .map(
                         (entry) => Text(
-                          '${entry.key + 1}. ${entry.value}',
+                          '${entry.key + 1}. ${entry.value.name} - ${entry.value.amount} ${entry.value.unit}',
                           style: GoogleFonts.playfairDisplay(
                             fontSize: 16,
                           ),
@@ -121,7 +121,7 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                       )
                       .toList(),
                 ),
-                if (widget.recipe.ingredients.length > 2)
+                if (widget.recipe.extendedIngredients.length > 2)
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -131,8 +131,7 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                     child: Text(
                       showFullIngredients ? 'Show less' : 'Show more',
                       style: TextStyle(
-                        color: Color(
-                            0xFFFFC36B), // Ganti dengan warna yang Anda inginkan
+                        color: Color(0xFFFFC36B),
                       ),
                     ),
                   ),
@@ -147,6 +146,7 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: widget.recipe.instructions
+                      .split('\n')
                       .asMap()
                       .entries
                       .where((entry) => showFullInstructions || entry.key < 2)
@@ -161,7 +161,7 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                       )
                       .toList(),
                 ),
-                if (widget.recipe.instructions.length > 2)
+                if (widget.recipe.instructions.split('\n').length > 1)
                   TextButton(
                     onPressed: () {
                       setState(() {
@@ -171,8 +171,7 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
                     child: Text(
                       showFullInstructions ? 'Show less' : 'Show more',
                       style: TextStyle(
-                        color: Color(
-                            0xFFFFC36B), // Ganti dengan warna yang Anda inginkan
+                        color: Color(0xFFFFC36B),
                       ),
                     ),
                   ),
@@ -181,6 +180,8 @@ class _RecipeDetailContentState extends State<RecipeDetailContent> {
           ),
         ],
       ),
-    );
+        );
+      
   }
 }
+

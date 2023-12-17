@@ -1,193 +1,110 @@
+import 'dart:convert';
+
 class RecipeData {
-  final String title;
-  final String imageUrl;
-  final int cookTime;
-  final String category;
-  final List<String> ingredients;
-  final List<String> instructions; // Gunakan List<String> untuk instruksi
+  int id; 
+  String title;
+  int readyInMinutes;
+  String sourceUrl;
+  String image;
+  String imageType;
+  String summary;
+  String spoonacularSourceUrl;
+   List<String> dishTypes;
+  List<String> occasions;
+  String instructions;
+  List<ExtendedIngredient> extendedIngredients; 
+  bool vegetarian;
+  bool vegan;
+  bool veryPopular;
+  bool veryHealthy;
 
   RecipeData({
+    required this.id,
     required this.title,
-    required this.imageUrl,
-    required this.cookTime,
-    required this.category,
-    required this.ingredients,
+    required this.readyInMinutes,
+    required this.sourceUrl,
+    required this.image,
+    required this.imageType,
+    required this.summary,
+    required this.spoonacularSourceUrl,
+    required this.dishTypes,
+    required this.occasions,
     required this.instructions,
+    required this.extendedIngredients,
+    required this.vegetarian,
+    required this.vegan,
+    required this.veryPopular,
+    required this.veryHealthy,
   });
 
-  static List<RecipeData> recipes = [
-    RecipeData(
-      title: 'Baked chicken wings and tomatoes sauce ',
-      imageUrl: 'assets/images/ayam_bakar.jpg',
-      cookTime: 30,
-      category: 'Breakfast Recipes',
-      ingredients: ['400 gr sayap ayam', 
-                    ' 1 sdm kecap asin', 
-                    '1 sdm saus tiram',
-                    '3 siung bawang putih',
-                    'Seruas jari kunyit',
-                    '1 sdt ketumbar',
-                    'Seruas jahe',
-                    'Gula dan garam'],
-      instructions: [
-        'Marinasi ayam dengan kecap asin dan saus tiram. Diamkan selama 10 menit. Lumuri ayam dengan bumbu halus, diamkan kembali selama 15 menit di dalam kulkas.',
-        'Nyalakan kompor, panaskan minyak, goreng sayap ayam menggunakan api sedang. Masak hingga warna cokelatnya merata. Sajikan.',
-        
-      ],
-    ),
-    RecipeData(
-      title: 'Grilled salmon with salad',
-      imageUrl: 'assets/images/salmon.jpg',
-      cookTime: 45,
-      category: 'Lunch Recipes',
-      ingredients: ['Daging ikan salmon', 'Bayam merah', 'Selada',
-      'Jagung manis','Unsalted butter','Merica bubuk','Air perasan jeruk lemon'],
-      instructions: [
-        'Cuci bersih semua sayuran, dan potong kecil-kecil sesuai selera, sisihkan.',
-        'Panaskan teflon, lelehkan unsalted butter dan grill ikan salmon sampai dengan tingkat kematangan yg diinginkan',
-        'Campurkan sayuran yg telah dicuci, kucuri dengan perasan air jeruk lemon',
-        'Tata sayur yg telah diberi dressing ke piring saji, letakkan pula grilled salmon disamping salad sayurnya',
-        'Finish! Easy peasy lemon squeezy.. praktis, sehat & bergizi, selamat mencoba ',
-      ],
-    ),
-    RecipeData(
-      title: 'Rendang Paha Ayam Organik',
-      imageUrl: 'assets/images/ayam_rendang.jpg',
-      cookTime: 50,
-      category: 'Dinner Recipes',
-      ingredients: ['4 paha ayam organik', '2 buah kentang, potong-potong', '2 butir telur rebus',
-      ' 1 lembar daun kunyit, iris','4 lembar daun jeruk','2 lembar daun salam','1 bungkus kerisik',
-      '200 ml santan dan air','Garam','Gula malaka','Penyedap rasa'],
-      instructions: [
-        'Goreng kentang, sisihkan.',
-        'Panaskan minyak, tumis bahan halus sampai kering dan pecah minyak.',
-        'Masukkan ayam tumis sebentar, kemudian masukkan santan dengan air, aduk rata.',
-        'Masukkan kerisik, daun jeruk, daun salam, dan daun kunyit.',
-        'Kemudian masukkan kentang dan telur rebus, tambahkan garam, gula malaka, dan penyedap rasa.',
-        'Masak dengan api kecil sampai air kering, jika ingin berkuah jangan masak sampai kering.',
-      ],
-    ),
-    RecipeData(
-      title: 'Penyetan Sambal Terasi Udang',
-      imageUrl: 'assets/images/penyetan.jpg',
-      cookTime: 20,
-      category: 'Lunch Recipes',
-      ingredients: ['25 buah cabai rawit merah', '15 buah cabai rawit hijau', '8 siung bawang merah',
-      '4 siung bawang putih','1 tomat sedang','2 bungkus terasi'],
-      instructions: [
-        'Goreng semua bahan sampai agak layu.',
-        'Ulek, tapi jangan terlalu halus, beri garam dan gula sesuai rasa yang diinginkan.',
-        'Tinggal siapkan lauk seperti tempe goreng, telur rebus, ayam, udang, dan lain-lain.',
-      ],
-    ),
-    RecipeData(
-      title: 'Tumis Jamur Tiram',
-      imageUrl: 'assets/images/jamur_tiram.jpg',
-      cookTime: 15,
-      category: 'Breakfast Recipes',
-      ingredients: ['2 bungkus jamur tiram', '1/2 papan tempe', '4 siung bawang merah',
-      '3 siung bawang putih','5 buah cabai hijau','Saus tiram',
-      'Kaldu jamur','Garam dan gula'],
-      instructions: [
-        'Cuci bersih jamur, siangi, sisihkan.',
-        'Goreng tempe setengah kering. Sisihkan.',
-        'Tumis dua bawang dan cabai sampai harum, masukkan jamur, aduk rata, tambahkan saus tiram, kaldu jamur, gula, dan garam. Aduk rata.',
-        'Masukkan tempe, beri sedikit air, masak sampai bumbu meresap. Angkat dan sajikan.',
-      ],
-    ),
-    RecipeData(
-      title: 'Cumi Pedas Manis',
-      imageUrl: 'assets/images/cumi.jpg',
-      cookTime: 25,
-      category: 'Lunch Recipes',
-      ingredients: [' 1 kg cumi ukuran besar', '2 papan petai', '10 butir bawang merah',
-      '10 buah cabai keriting merah',' 1 buah tomat','50 gr daun bawang',' 6 butir bawang merah'],
-      instructions: [
-        'Tumis bumbu halus sampai matang, lalu masukkan cumi. Aduk rata.',
-        'Beri sedikit air, kalau sudah mendidih masukkan semua bumbu.',
-        'Saat kuah mulai sedikit surut dan mengental, masukkan semua bumbu iris dan petai.',
-        'Aduk-aduk, biarkan sebentar, lalu angkat dan sajikan.',
-      ],
-    ),
-    RecipeData(
-      title: 'Sup Kimlo Bakso',
-      imageUrl: 'assets/images/sup.jpg',
-      cookTime: 30,
-      category: 'Dinner Recipes',
-      ingredients: ['Bakso sapi', 'Jamur kuping', 'Soun',
-      'Wortel','ayam fillet','Kacang kapri','Daun bawang'],
-      instructions: [
-        'Tumis bawang putih, bawang bombay, dan jahe hingga harum, masukkan pala bubuk dan lada bubuk, aduk rata.',
-        'Tambahkan air kaldu sesuai selera, biarkan sampai mendidih.',
-        ' Tambahkan wortel, biarkan hingga setengah matang, lalu tambahkan bakso, ayam suwir, kacang kapri, jamur kuping, kaldu bubuk, dan garam, masak semua hingga matang.',
-        'Beberapa saat sebelum api dimatikan, tambahkan daun bawang.',
-        'Sajikan dengan bawang goreng dan seledri.',
-      ],
-    ),
-    RecipeData(
-      title: 'Asem-Asem Daging',
-      imageUrl: 'assets/images/Daging.jpg',
-      cookTime: 60,
-      category: 'Breakfast Recipes',
-      ingredients: [' 1/4 daging', 'Buncis', '8 bawang merah',
-      '6 bawang putih','4 daun jeruk','2 daun salam','2 ruas jari jahe',
-      '15 cabai hijau','2 tomat hijau','3 belimbing wuluh','Garam, gula pasir, dan penyedap',
-      'Kecap manis'],
-      instructions: [
-        'Tumis bawang merah dan putih, kemudian cabai hijau.',
-        'Lalu tuang ke rebusan daging dan masukkan semua bumbu kecuali belimbing wuluh dan tomat, masak sampai mendidih.',
-        'Masukkan buncis.',
-        'Masukkan tomat, belimbing, garam, gula, penyedap, dan kecap manis.',
-      ],
-    ),
-    RecipeData(
-      title: 'Oreo Cake Kukus',
-      imageUrl: 'assets/images/oreo_cake.jpg',
-      cookTime: 45,
-      category: 'Cake recipes',
-      ingredients: ['2 bungkus oreo', 'Susu cair 200 ml', '5 sdm susu kental manis',
-      '¼ sdt bubuk kayu manis '],
-      instructions: [
-        'Pisahkan kepingan oreo dengan krim vanilanya.',
-        'Haluskan biskuit oreo menggunakan blender.',
-        'Campurkan biskuit yang dihaluskan dengan 150 ml susu cair putih dan susu kental manis, kemudian aduk hingga merata.',
-        'Kemudian, olesi cetakan dengan sedikit margarin. Tuangkan adonan ke dalam cetakan dan kukus selama 30 menit.',
-        'Sambil menunggu, campurkan krim vanilla dengan 50 ml susu cair dan bubuk kayu manis. Campur dan aduk hingga lumer.Jika cake sudah matang, angkat dan lepaskan dari cetakan.',
-        'Siram cake dengan krim vanilla yang lumer.Cake oreo siap di sajikan.',
-      ],
-    ),
-    RecipeData(
-      title: 'Choco Lava Cake',
-      imageUrl: 'assets/images/cake_lava.jpg',
-      cookTime: 40,
-      category: 'Cake recipes',
-      ingredients: ['90 gr butter', '150 gr coklat', '2 butir kuning telur',
-      '100 gr tepung terigu','40 gr coklat bubuk','3 sdm mentega','Gula halus'],
-      instructions: [
-        'Cairkan butter dan dark chocolate, kemudian campurkan dengan gula halus.',
-        'Kemudian campurkan tepung terigu, kuning telur, cokelat bubuk dan kemudian aduk hingga rata.',
-        'Olesi cetakan dengan margarin, kemudian, masukkan adonan ke dalam cetakan setengah bagian saja. Kemudian masukkan adonan dark chocolate, dan kemudian tuangkan adonan kue di atasnya.',
-        'Oven selama 30 menit dengan suhu 180 derajat.',
-        'Jika sudah matang, sajikan choco lava cake dengan topping sesuai selera.',
-      ],
-    ),
-    RecipeData(
-      title: 'Cheese Cake Durian',
-      imageUrl: 'assets/images/cake_durian.jpg',
-      cookTime: 60,
-      category: 'Cake recipes',
-      ingredients: ['100 g susu ', '60g daging durian atau pasta durian', '30 g mentega/butter',
-      '125 g  cream cheese','30g tepung terigu','20 g tepung maizena','2 kuning telur',
-      '1 sdt esens vanila','2 putih telur','sejumput cream of tartar','40 g gula'],
-      instructions: [
-        'Olesi loyang yang akan Anda gunakan untuk memanggang dengan mentega.',
-        'Panaskan susu, mentega & pasta durian sampai mentega mencair.',
-        'Kemudian tambahkan cream cheese. didihkan campuran hingga cream cheese meleleh dan campuran kental dan halus. Dinginkan campuran.',
-        'Ayak tepung & mixer dengan kuning telur sampai tercampur rata.',
-        'Kocok putih  telur dan cream of tartar dalam mangkuk kering yang bersih sampai berbusa. Tambahkan gula secara bertahap sampai busa kaku terbentuk. Campurkan semua campuran secara hati-hati.',
-        'Tuang adonan ke dalam loyang dan panggang dalam suhu 160 celcius untuk 1-1,5 jam atau sampai coklat keemasan.',
-        'Angkat kue dan keluarkan dari loyang. Dinginkan sebelum mengirisnya.',
-      ],
-    ),
-  ];
+  factory RecipeData.fromJson(Map<String, dynamic> json) {
+    return RecipeData(
+      id: json['id'],
+      title: json['title'] ?? '',
+      readyInMinutes: json['readyInMinutes'] ?? 0,
+      sourceUrl: json['sourceUrl']?? '',
+      image: json['image']?? '',
+      imageType: json['imageType']?? '',
+      summary: json['summary']?? '',
+      spoonacularSourceUrl: json['spoonacularSourceUrl']?? '',
+      dishTypes: List<String>.from(json['dishTypes']),
+      occasions: List<String>.from(json['occasions']),
+      instructions: json['instructions'],
+      extendedIngredients: List<ExtendedIngredient>.from(
+        json['extendedIngredients'].map(
+          (item) => ExtendedIngredient.fromJson(item),
+        ),
+      ),
+      vegetarian: json['vegetarian']?? false,
+      vegan: json['vegan']?? false,
+      veryPopular: json['veryPopular']?? false,
+      veryHealthy: json['veryHealthy']?? false,
+    );
+  }
 }
+
+class ExtendedIngredient {
+  int id;
+  String aisle;
+  String image;
+  String consistency;
+  String name;
+  String nameClean;
+  String original;
+  String originalName;
+  double amount;
+  String unit;
+  List<String> meta;
+
+  ExtendedIngredient({
+    required this.id,
+    required this.aisle,
+    required this.image,
+    required this.consistency,
+    required this.name,
+    required this.nameClean,
+    required this.original,
+    required this.originalName,
+    required this.amount,
+    required this.unit,
+    required this.meta,
+  });
+
+  factory ExtendedIngredient.fromJson(Map<String, dynamic> json) {
+    return ExtendedIngredient(
+      id: json['id'],
+      aisle: json['aisle'],
+      image: json['image'],
+      consistency: json['consistency'],
+      name: json['name'],
+      nameClean: json['nameClean'],
+      original: json['original'],
+      originalName: json['originalName'],
+      amount: json['amount'],
+      unit: json['unit'],
+      meta: List<String>.from(json['meta']),
+    );
+  }
+}
+
+
